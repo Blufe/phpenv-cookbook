@@ -9,7 +9,7 @@
 #
 
 actions :run
-default_action :use
+default_action :run
 
 attribute :name,           :kind_of => String, :name_attribute => true
 attribute :code,           :kind_of => String

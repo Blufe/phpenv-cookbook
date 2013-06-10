@@ -34,9 +34,8 @@ end
 
 phpenv_script "phpenv-get-releases" do
   code "phpenv install --releases && touch #{node[:phpenv][:root_path]}/.last_updated" #  > /dev/null 2>&1
-  user "root"
-  group "root"
-  action :run
+  owner node[:phpenv][:user]
+  group node[:phpenv][:group]
   phpenv_root node[:phpenv][:root_path]
   not_if {
     File.exists?("#{node[:phpenv][:root_path]}/.last_updated") &&
