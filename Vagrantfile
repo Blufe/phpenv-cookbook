@@ -79,10 +79,15 @@ Vagrant.configure("2") do |config|
 
   config.vm.provision :chef_solo do |chef|
     chef.json = {
-      :mysql => {
-        :server_root_password => 'rootpass',
-        :server_debian_password => 'debpass',
-        :server_repl_password => 'replpass'
+      :phpenv => {
+        :phps => [
+          {
+            :release => "5.3.25",
+            :environment => { "LDFLAGS" => "-lstdc++" }
+          },
+          "5.4.15"
+        ],
+        "global" => "5.4.15"
       }
     }
 
