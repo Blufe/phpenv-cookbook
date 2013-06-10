@@ -37,6 +37,7 @@ private
 
 def build_script_code
   script = []
+  script << %{phpenv install --deep-clean;}
   script << %{phpenv install}
   script << %{php-#{new_resource.release}}
   if new_resource.build
