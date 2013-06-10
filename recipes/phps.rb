@@ -19,10 +19,5 @@ Array(node[:phpenv][:phps]).each do |php|
 end
 
 if node[:phpenv][:global]
-  phpenv_script "phpenv-set-golbal-version" do
-    code "phpenv global #{node[:phpenv][:global]}"
-    user node[:phpenv][:user]
-    group node[:phpenv][:group]
-    phpenv_root node[:phpenv][:root_path]
-  end
+  phpenv_global node[:phpenv][:global]
 end
