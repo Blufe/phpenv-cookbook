@@ -10,3 +10,4 @@
 
 include_recipe "phpenv::base"
 include_recipe "phpenv::install"
+include_recipe "phpenv::phps"

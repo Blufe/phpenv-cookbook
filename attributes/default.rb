@@ -24,3 +24,6 @@ default[:phpenv][:packages] = %w{
   libtool libwrap0-dev libxml2-dev libxmltok1-dev libxslt1-dev netbase netcat
   netcat-openbsd re2c tzdata unixodbc-dev zlib1g-dev
 }
+
+default[:phpenv][:phps] = []
+default[:phpenv][:global] = nil
