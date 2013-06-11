@@ -1,8 +1,9 @@
-# gitlab cookbook
+# phpenv cookbook
 
-Installs and configures the [GitLab](https://github.com/gitlabhq/gitlabhq)
-application for production environment.
+Installs [phpenv](https://github.com/phpenv/phpenv) php version manager
+application and build php from source for production environments.
 
+The cookbook provides LWRPs to easily build new php versions.
 
 # Requirements
 
@@ -13,25 +14,29 @@ Requires Chef 10.16.4 or later.
 
 # Usage
 
-If you want the full stack be handled by the cookbook just add the `default`
-recipe to your run list:
+Add the `default`recipe to your run list:
 
-    { "run_list": ["recipe[gitlab]"] }
-
-If you want to customize some parts, e.g. use percona or postgres instead of mysql
-just add individual recipes to the run list and replace some of your own:
-
-    { "run_list": [
-      "recipe[gitlab::base]",
-      "recipe[gitlab::redis]",
-      "recipe[your_cookbook::your_database_recipe]",
-      "recipe[gitlab::shell]",
-      "recipe[gitlab::app]",
-      "recipe[gitlab::web]"
-    ] }
-
+    { "run_list": ["recipe[phpenv]"] }
 
 # Attributes
+
+By default phpenv will be installed into `/opt/phpenv` directory and can be used
+by every user but only `root` can build a new php version and set the global php
+version.
+
+You can build different php versions  just like specifying e.g. the following
+attributes:
+
+    "phpenv": {
+      "phps": [
+        {
+          "release": "5.3.25",
+          "environment": { "LDFLAGS": "-lstdc++" }
+        },
+        "5.4.15"
+      ],
+      "global": "5.4.15"
+    }
 
 See [`attributes/default.rb`](attributes/default.rb) for more information.
 
@@ -44,28 +49,47 @@ Installs the full stack.
 
 ## base
 
-Installs dependencies and setup a user.
+Installs dependencies for building php from the git source.
 
-## database
+## install
 
-Installs mysql and setup a database.
+Installs phpenv and meke it ready to build phps.
 
-## redis
+## phps
 
-Installs redis server from a ppa repository.
+Builds different php versions specified by the `phps` attribute.
 
-## shell
+# LWRPs
 
-Setup gitlab-shell.
+## phpenv_script
 
-## app
+Runs code in a proper phpenv environment.
+The resource has the same attributes as the [`script`](http://docs.opscode.com/resource_script.html) resource and adds the following ones:
 
-Installs the gitlab application and setup the gitlab service.
+`phpenv_root`: path to the phpenv installation
+`phpenv_version`: php version to use
 
-## web
+## phpenv_php
 
-Installs nginx web server and a gitlab virtualhost to serve the app.
+Builds a php version. Attributes:
 
+`release`: php release version e.g "5.3.25" or "5.5.0RC2"
+`build`: build name e.g. "dev"
+`ini`: ini file to use e.g. "production"
+`environment`: hash of environment variables
+
+    phpenv_php "5.3.25" do
+      environment "LDFLAGS" => "-lstdc++"
+    end
+
+## phpenv_global
+
+Sets the global php version. Attributes:
+
+`phpenv_version`: php version to use as global
+`environment`: hash of environment variables
+
+    phpenv_global "5.3.25"
 
 # Author
 
