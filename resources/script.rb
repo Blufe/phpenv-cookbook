@@ -18,7 +18,7 @@ attribute :cwd,            :kind_of => String
 attribute :environment,    :kind_of => Hash
 attribute :group,          :kind_of => String
 attribute :path,           :kind_of => Array
-attribute :phpenv_root,    :kind_of => String, :required => true
+attribute :phpenv_root,    :kind_of => String, :default => node[:phpenv][:root_path]
 attribute :phpenv_version, :kind_of => String
 attribute :returns,        :kind_of => Array, :default => [ 0 ]
 attribute :timeout,        :kind_of => Integer
