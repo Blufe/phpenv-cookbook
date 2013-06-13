@@ -10,7 +10,9 @@
 
 # install required packages
 node[:phpenv][:packages].each do |pkg|
-  package pkg
+  package "phpenv-#{pkg}" do
+    name pkg
+  end
 end
 
 # insaltt the latest git (git >1.7.9 is requred by gitlab)
@@ -22,6 +24,7 @@ apt_repository "git" do
   key "E1DF1F24"
 end
 
-package "git" do
+package "phpenv-git" do
+  name "git"
   action :upgrade
 end
