@@ -9,3 +9,4 @@ version          "0.1.0"
 supports "ubuntu"
 
 depends "apt", "~> 1.9.2"
+depends "apache2", "~> 1.6.6"
