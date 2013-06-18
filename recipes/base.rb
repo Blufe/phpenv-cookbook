@@ -11,11 +11,11 @@
 # install required packages
 node[:phpenv][:packages].each do |pkg|
   package "phpenv-#{pkg}" do
-    name pkg
+    package_name pkg
   end
 end
 
-# insaltt the latest git (git >1.7.9 is requred by gitlab)
+# install the latest git (git >1.7.9 is requred by gitlab)
 apt_repository "git" do
   uri "http://ppa.launchpad.net/git-core/ppa/ubuntu"
   distribution node['lsb']['codename']
@@ -25,6 +25,6 @@ apt_repository "git" do
 end
 
 package "phpenv-git" do
-  name "git"
+  package_name "git"
   action :upgrade
 end
