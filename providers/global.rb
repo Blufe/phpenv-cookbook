@@ -8,6 +8,8 @@
 # file that was distributed with this source code.
 #
 
+include Chef::Phpenv::Helpers
+
 use_inline_resources
 
 def whyrun_supported?
@@ -25,12 +27,4 @@ action :set do
     environment new_resource.environment
     only_if { current_version != new_resource.phpenv_version }
   end
-end
-
-private
-
-def current_global_version
-  version_file = ::File.join(node[:phpenv][:root_path], 'version')
-
-  ::File.exists?(version_file) && ::IO.read(version_file).chomp
 end
