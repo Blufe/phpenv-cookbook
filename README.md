@@ -1,7 +1,7 @@
 # phpenv cookbook
 
 Installs [phpenv](https://github.com/phpenv/phpenv) php version manager
-application and build php from source for production environments.
+application in a global way and build php from source.
 
 The cookbook provides LWRPs to easily build new php versions.
 

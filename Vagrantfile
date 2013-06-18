@@ -85,15 +85,24 @@ Vagrant.configure("2") do |config|
             :release => "5.3.25",
             :environment => { "LDFLAGS" => "-lstdc++" }
           },
-          "5.4.15"
+          {
+            :release => "5.4.15",
+            :fpm => true
+          }
         ],
-        "global" => "5.4.15"
+        "global" => "5.4.15",
+        "apache_module" => "5.3.25"
+      },
+      "apache" => {
+        "package" => "apache2-mpm-prefork",
+        "default_site_enabled" => 0
       }
     }
 
     chef.run_list = [
-        "recipe[apt::default]",
-        "recipe[phpenv::default]"
+        "recipe[apt]",
+        "recipe[apache2]",
+        "recipe[phpenv]"
     ]
   end
 end

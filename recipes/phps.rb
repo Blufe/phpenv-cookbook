@@ -13,6 +13,10 @@ Array(node[:phpenv][:phps]).each do |php|
     phpenv_php php[:release] do
       environment php[:environment] if php[:environment]
     end
+
+    if php[:fpm]
+      phpenv_fpm_service php[:release]
+    end
   else
     phpenv_php php
   end
@@ -20,4 +24,8 @@ end
 
 if node[:phpenv][:global]
   phpenv_global node[:phpenv][:global]
+end
+
+if node[:phpenv][:apache_module]
+  phpenv_apache_module node[:phpenv][:apache_module]
 end

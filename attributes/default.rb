@@ -27,3 +27,4 @@ default[:phpenv][:packages] = %w{
 
 default[:phpenv][:phps] = []
 default[:phpenv][:global] = nil
+default[:phpenv][:apache_module] = nil
