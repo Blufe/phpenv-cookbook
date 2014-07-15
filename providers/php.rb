@@ -37,14 +37,11 @@ private
 
 def build_script_code
   script = []
-  script << %{phpenv install --deep-clean;}
-  script << %{phpenv install}
-  script << %{php-#{new_resource.release}}
-  if new_resource.build
-    script << %{#{new_resource.build}}
+
+  phpenv_type = node[:phpenv][:type]
+  if phpenv_type == "chh"
+    script << %{phpenv install #{new_resource.release}}
   end
-  if new_resource.ini
-    script << %{-i #{new_resource.ini}}
-  end
+
   script.join(" ")
 end
