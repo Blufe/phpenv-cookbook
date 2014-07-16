@@ -33,7 +33,7 @@ if phpenv_type == "chh"
       'PHPENV_ROOT' => node['phpenv']['root_path'],
       'PATH' => "#{node['phpenv']['root_path']}/bin:#{ENV['PATH']}"
     })
-    not_if "phpenv", :environment => {
+    not_if "which phpenv;", :environment => {
         'PHPENV_ROOT' => node['phpenv']['root_path'],
         'PATH' => "#{node['phpenv']['root_path']}/bin:#{ENV['PATH']}"
       }
