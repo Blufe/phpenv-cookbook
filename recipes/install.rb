@@ -26,8 +26,6 @@ if phpenv_type == "chh"
     action :sync
   end
 
-  log "#{node['phpenv']['root_path']}/bin:#{ENV['PATH']}"
-
   execute "install phpenv" do
     cwd "#{node['phpenv']['src']}/bin"
     command "./phpenv-install.sh"
