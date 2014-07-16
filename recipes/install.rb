@@ -34,6 +34,7 @@ if phpenv_type == "chh"
       'PATH' => "#{node['phpenv']['root_path']}/bin:#{ENV['PATH']}"
     })
     not_if { File.exists?("#{node['phpenv']['root_path']}/bin/phpenv") }
+  end
 
   %w{plugins shims versions}.each do |dir|
     directory "#{node['phpenv']['root_path']}/#{dir}" do
