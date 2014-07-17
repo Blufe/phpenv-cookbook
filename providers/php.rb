@@ -41,6 +41,7 @@ def build_script_code
   phpenv_type = node[:phpenv][:type]
   if phpenv_type == "chh"
     script << %{phpenv install #{new_resource.release}}
+    script << %{#{node['apache']['dir']}/modules/libphp5.so #{node[:phpenv][:root_path]}/versions/#{new_resource.release}/libexec/libphp5.so}
   end
 
   script.join(" ")

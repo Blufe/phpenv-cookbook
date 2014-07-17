@@ -21,3 +21,7 @@ end
 if node[:phpenv][:global]
   phpenv_global node[:phpenv][:global]
 end
+
+if node[:phpenv][:apache_module]
+  phpenv_apache_module node[:phpenv][:apache_module]
+end
