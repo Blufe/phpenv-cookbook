@@ -23,7 +23,6 @@ default["phpenv"]["chh"]["packages"] = %w{
  make
  git
  autoconf
- autoconf2.13
  automake
  libxml2-devel
  libcurl-devel
