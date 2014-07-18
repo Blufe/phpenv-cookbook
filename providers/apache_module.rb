@@ -40,26 +40,10 @@ action :set do
       action :nothing
     end
 
-    template "#{node['apache']['dir']}/mods-available/php5.load" do
-      source "apache/php5.load.erb"
-      owner "root"
-      group "root"
-      mode 00644
-      variables(
-        :module_path => module_path,
-      )
-      notifies :restart, "service[apache2]"
+    apache_module "php5" do
+      module_path module_path
+      conf true
     end
-
-    template "#{node['apache']['dir']}/mods-available/php5.conf" do
-      source "apache/php5.conf.erb"
-      owner "root"
-      group "root"
-      mode 0644
-      notifies :restart, "service[apache2]"
-    end
-
-    apache_module "php5"
   elsif module_path
     Chef::Log.warn(
       "apache module file doesn't exists \"#{module_path}\" (action will be skipped)"

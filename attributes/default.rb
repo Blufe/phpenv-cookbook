@@ -20,9 +20,6 @@ default["phpenv"]["chh"]["php-build"]["git_url"] = "https://github.com/CHH/php-b
 default["phpenv"]["chh"]["php-build"]["git_ref"] = "master"
 default["phpenv"]["chh"]["rbenv-install-to-chh-phpenv"]["url"] = "https://raw.github.com/hnw/php-build/plugin-to-chh-phpenv/bin/rbenv-install"
 default["phpenv"]["chh"]["packages"] = %w{
- make
- git
- autoconf
  automake
  libxml2-devel
  libcurl-devel
@@ -34,59 +31,12 @@ default["phpenv"]["chh"]["packages"] = %w{
  sqlite-devel
  libtidy-devel
  libxslt-devel
- apache2-prefork-dev
  bison
  chrpath
- debhelper
  flex
- freetds-dev
- hardening-wrapper
  lemon
- libapr1-dev
- libbz2-dev
- libcurl4-openssl-dev
- libdb-dev
- libedit-dev
- libenchant-dev
- libevent-dev
- libexpat1-dev
- libfreetype6-dev
- libgcrypt11-dev
- libgd2-xpm-dev
- libglib2.0-dev
- libgmp3-dev
- libicu-dev
- libjpeg-dev
- libjpeg62-dev
- libkrb5-dev
- libldap2-dev
- libmagic-dev
- libmcrypt-dev
- libmhash-dev
- libmysqlclient-dev
- libpam0g-dev
- libpcre3-dev
- libpng12-dev
- libpq-dev
- libpspell-dev
- librecode-dev
- libsasl2-dev
- libsnmp-dev
- libsqlite3-dev
- libssl-dev
- libtidy-dev
- libtool
- libwrap0-dev
- libxml2-dev
- libxmltok1-dev
- libxslt1-dev
- netbase
- netcat
- netcat-openbsd
  re2c
  tzdata
- unixodbc-dev
- zlib1g-dev
 }
 
 default["phpenv"]["phps"] = []

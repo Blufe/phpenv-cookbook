@@ -27,4 +27,10 @@ action :set do
     environment new_resource.environment
     only_if { current_version != new_resource.phpenv_version }
   end
+
+  link "#{node['apache']['dir']}/modules/libphp5.so" do
+    to "#{node[:phpenv][:root_path]}/versions/#{new_resource.phpenv_version}/libexec/libphp5.so"
+    owner node[:phpenv][:user]
+    group node[:phpenv][:group]
+  end
 end
