@@ -21,6 +21,10 @@ default["phpenv"]["chh"]["php-build"]["git_ref"] = "master"
 default["phpenv"]["chh"]["rbenv-install-to-chh-phpenv"]["url"] = "https://raw.github.com/hnw/php-build/plugin-to-chh-phpenv/bin/rbenv-install"
 default["phpenv"]["chh"]["packages"] = %w{
  automake
+ libevent
+ libevent-devel
+ libtool-ltdl
+ libtool-ltdl-devel
  libxml2-devel
  libcurl-devel
  libjpeg-turbo-devel
