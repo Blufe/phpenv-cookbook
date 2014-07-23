@@ -35,6 +35,8 @@ default["phpenv"]["chh"]["packages"] = %w{
  sqlite-devel
  libtidy-devel
  libxslt-devel
+ httpd
+ httpd-devel
  bison
  chrpath
  flex
