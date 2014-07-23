@@ -8,8 +8,6 @@
 # file that was distributed with this source code.
 #
 
-include_attribute 'apache2'
-
 default["phpenv"]["src"] = "/usr/local/src/phpenv"
 default["phpenv"]["root_path"] = "/usr/local/phpenv"
 default["phpenv"]["user"] = "root"
