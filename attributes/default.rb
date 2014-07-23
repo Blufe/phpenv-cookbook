@@ -37,6 +37,9 @@ default["phpenv"]["chh"]["packages"] = %w{
  libxslt-devel
  httpd
  httpd-devel
+ apr
+ apr-devel
+ apr-util-devel
  bison
  chrpath
  flex
