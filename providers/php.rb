@@ -28,7 +28,7 @@ action :build do
     end
     file conf_path do
       _file = Chef::Util::FileEdit.new(path)
-      _file.insert_line_if_no_match(/^LoadModule .*$/, "LoadModule dummy dummy.so"
+      _file.insert_line_if_no_match(/^LoadModule .*$/, "LoadModule dummy dummy.so")
       _file.write_file
     end
   end
