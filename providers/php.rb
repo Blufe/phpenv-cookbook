@@ -47,6 +47,22 @@ action :build do
 
   Chef::Log.debug("#{new_resource} build time was " +
     "#{(Time.now - install_start)/60.0} minutes")
+
+  if node[:phpenv][:chh][:default_configure_options].find {|option| option =~ /^--with-apxs2/}
+    case node['platform_family']
+    when 'rhel', 'fedora', 'arch'
+      conf_path = "#{node['apache']['dir']}/conf/httpd.conf"
+    when 'debian'
+      conf_path = "#{node['apache']['dir']}/apache2.conf"
+    when 'freebsd'
+      conf_path = "#{node['apache']['dir']}/httpd.conf"
+    end
+    file conf_path do
+      _file = Chef::Util::FileEdit.new(path)
+      _file.search_file_delete_line(/^LoadModule \+dumyy \+dummy.so.*$/)
+      _file.write_file
+    end
+  end
 end
 
 private
