@@ -59,5 +59,14 @@ if phpenv_type == "chh"
     mode 00755
     action :create
   end
+  template "#{node['phpenv']['root_path']}/plugins/php-build/share/php-build/default_configure_options" do
+    source "default_configure_options.erb"
+    owner node["phpenv"]["user"]
+    group node["phpenv"]["group"]
+    mode 00755
+    variables({
+      "default_configure_options" => node['phpenv'][phpenv_type]['default_configure_options']
+    })
+  end
 end
 

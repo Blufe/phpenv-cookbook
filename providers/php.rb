@@ -17,6 +17,22 @@ end
 action :build do
   script_code = build_script_code
 
+  if node[:phpenv][:chh][:default_configure_options].find {|option| option =~ /^--with-apxs2/}
+    case node['platform_family']
+    when 'rhel', 'fedora', 'arch'
+      conf_path "#{node['apache']['dir']}/conf/httpd.conf"
+    when 'debian'
+      conf_path "#{node['apache']['dir']}/apache2.conf"
+    when 'freebsd'
+      conf_path "#{node['apache']['dir']}/httpd.conf"
+    end
+    file conf_path do
+      _file = Chef::Util::FileEdit.new(path)
+      _file.insert_line_if_no_match(/^LoadModule .*$/, "LoadModule dummy dummy.so"
+      _file.write_file
+    end
+  end
+
   install_start = Time.now
 
   phpenv_script "php-#{new_resource.name}" do
@@ -41,7 +57,9 @@ def build_script_code
   phpenv_type = node[:phpenv][:type]
   if phpenv_type == "chh"
     script << %{phpenv install #{new_resource.release}}
-    script << %{mv #{node['apache']['dir']}/modules/libphp5.so #{node[:phpenv][:root_path]}/versions/#{new_resource.release}/libexec/libphp5.so}
+    if node[:phpenv][:chh][:default_configure_options].find {|option| option =~ /^--with-apxs2/}
+      script << %{mv #{node['apache']['dir']}/modules/libphp5.so #{node[:phpenv][:root_path]}/versions/#{new_resource.release}/libexec/libphp5.so}
+    end
   end
 
   script.join(" ")
