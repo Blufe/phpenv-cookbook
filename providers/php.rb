@@ -20,11 +20,11 @@ action :build do
   if node[:phpenv][:chh][:default_configure_options].find {|option| option =~ /^--with-apxs2/}
     case node['platform_family']
     when 'rhel', 'fedora', 'arch'
-      conf_path "#{node['apache']['dir']}/conf/httpd.conf"
+      conf_path = "#{node['apache']['dir']}/conf/httpd.conf"
     when 'debian'
-      conf_path "#{node['apache']['dir']}/apache2.conf"
+      conf_path = "#{node['apache']['dir']}/apache2.conf"
     when 'freebsd'
-      conf_path "#{node['apache']['dir']}/httpd.conf"
+      conf_path = "#{node['apache']['dir']}/httpd.conf"
     end
     file conf_path do
       _file = Chef::Util::FileEdit.new(path)
