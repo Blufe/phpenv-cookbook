@@ -37,7 +37,7 @@ action :build do
         _file.write_file
       end
 
-#      script << %{mv #{node['apache']['dir']}/modules/libphp5.so #{node[:phpenv][:root_path]}/versions/#{new_resource.release}/libexec/libphp5.so;}
+      script << %{mv #{node['apache']['dir']}/modules/libphp5.so #{node[:phpenv][:root_path]}/versions/#{new_resource.release}/libexec/libphp5.so;}
     end
   end
 
@@ -75,7 +75,7 @@ end
 def build_script_environment
   script_env = {
     'PKG_CONFIG_PATH' => node[:phpenv][:pkgconfig_path],
-    'PHP_BUILD_CONFIGURE_OPTS' => "--libexecdir=#{node[:phpenv][:root_path]}/versions/#{new_resource.release}/libexec"
+    'PHP_BUILD_CONFIGURE_OPTS' => ""
   }
   if new_resource.environment
     script_env.merge!(new_resource.environment)
