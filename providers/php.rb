@@ -37,7 +37,7 @@ action :build do
         _file.write_file
       end
 
-      script << %{mv #{node['apache']['dir']}/modules/libphp5.so #{node[:phpenv][:root_path]}/versions/#{new_resource.release}/libexec/libphp5.so;}
+      script_code << %{mv #{node['apache']['dir']}/modules/libphp5.so #{node[:phpenv][:root_path]}/versions/#{new_resource.release}/libexec/libphp5.so;}
     end
   end
 
