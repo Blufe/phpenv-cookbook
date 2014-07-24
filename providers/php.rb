@@ -49,7 +49,7 @@ action :build do
     user node[:phpenv][:user]
     group node[:phpenv][:group]
     action :run
-    environment(build_script_environment)
+    environment(script_environment)
     not_if { Dir.exists?("#{node[:phpenv][:root_path]}/versions/#{new_resource.release}") }
   end
 
