@@ -12,6 +12,7 @@ default["phpenv"]["src"] = "/usr/local/src/phpenv"
 default["phpenv"]["root_path"] = "/usr/local/phpenv"
 default["phpenv"]["user"] = "root"
 default["phpenv"]["group"] = "phpenv"
+default["phpenv"]["pkgconfig_path"] = "/usr/lib64/pkgconfig"
 
 default["phpenv"]["type"] = "chh"
 default["phpenv"]["chh"]["git_url"] = "https://github.com/CHH/phpenv.git"

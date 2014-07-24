@@ -16,20 +16,28 @@ end
 
 action :build do
   script_code = build_script_code
+  script_environment  = build_script_environment
 
-  if node[:phpenv][:chh][:default_configure_options].find {|option| option =~ /^--with-apxs2/}
-    case node['platform_family']
-    when 'rhel', 'fedora', 'arch'
-      conf_path = "#{node['apache']['dir']}/conf/httpd.conf"
-    when 'debian'
-      conf_path = "#{node['apache']['dir']}/apache2.conf"
-    when 'freebsd'
-      conf_path = "#{node['apache']['dir']}/httpd.conf"
-    end
-    file conf_path do
-      _file = Chef::Util::FileEdit.new(path)
-      _file.insert_line_if_no_match(/^LoadModule .*$/, "LoadModule dummy dummy.so")
-      _file.write_file
+  phpenv_type = node[:phpenv][:type]
+  case phpenv_type
+  when 'chh'
+    options = node[:phpenv][:chh][:default_configure_options]
+    if options.find {|option| option =~ /^--with-apxs2/}
+      case node['platform_family']
+      when 'rhel', 'fedora', 'arch'
+        conf_path = "#{node['apache']['dir']}/conf/httpd.conf"
+      when 'debian'
+        conf_path = "#{node['apache']['dir']}/apache2.conf"
+      when 'freebsd'
+        conf_path = "#{node['apache']['dir']}/httpd.conf"
+      end
+      file conf_path do
+        _file = Chef::Util::FileEdit.new(path)
+        _file.insert_line_if_no_match(/^LoadModule .*$/, "#LoadModule dummy dummy.so")
+        _file.write_file
+      end
+
+#      script << %{mv #{node['apache']['dir']}/modules/libphp5.so #{node[:phpenv][:root_path]}/versions/#{new_resource.release}/libexec/libphp5.so;}
     end
   end
 
@@ -41,28 +49,13 @@ action :build do
     user node[:phpenv][:user]
     group node[:phpenv][:group]
     action :run
-    environment new_resource.environment
+    environment(build_script_environment)
     not_if { Dir.exists?("#{node[:phpenv][:root_path]}/versions/#{new_resource.release}") }
   end
 
   Chef::Log.debug("#{new_resource} build time was " +
     "#{(Time.now - install_start)/60.0} minutes")
 
-  if node[:phpenv][:chh][:default_configure_options].find {|option| option =~ /^--with-apxs2/}
-    case node['platform_family']
-    when 'rhel', 'fedora', 'arch'
-      conf_path = "#{node['apache']['dir']}/conf/httpd.conf"
-    when 'debian'
-      conf_path = "#{node['apache']['dir']}/apache2.conf"
-    when 'freebsd'
-      conf_path = "#{node['apache']['dir']}/httpd.conf"
-    end
-    file conf_path do
-      _file = Chef::Util::FileEdit.new(path)
-      _file.search_file_delete_line(/^LoadModule \+dumyy \+dummy.so.*$/)
-      _file.write_file
-    end
-  end
 end
 
 private
@@ -71,12 +64,22 @@ def build_script_code
   script = []
 
   phpenv_type = node[:phpenv][:type]
-  if phpenv_type == "chh"
-    script << %{phpenv install #{new_resource.release}}
-    if node[:phpenv][:chh][:default_configure_options].find {|option| option =~ /^--with-apxs2/}
-      script << %{mv #{node['apache']['dir']}/modules/libphp5.so #{node[:phpenv][:root_path]}/versions/#{new_resource.release}/libexec/libphp5.so}
-    end
+  case phpenv_type
+  when 'chh'
+    script << %{phpenv install #{new_resource.release};}
   end
 
   script.join(" ")
+end
+
+def build_script_environment
+  script_env = {
+    'PKG_CONFIG_PATH' => node[:phpenv][:pkgconfig_path],
+    'PHP_BUILD_CONFIGURE_OPTS' => "--libexecdir=#{node[:phpenv][:root_path]}/versions/#{new_resource.release}/libexec"
+  }
+  if new_resource.environment
+    script_env.merge!(new_resource.environment)
+  end
+
+  script_env
 end
