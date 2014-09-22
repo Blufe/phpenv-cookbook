@@ -23,6 +23,5 @@ if node[:phpenv][:global]
 end
 
 if node[:phpenv][:apache_module]
-  include_recipe 'apache2'
   phpenv_apache_module node[:phpenv][:apache_module]
 end

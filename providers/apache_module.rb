@@ -37,6 +37,10 @@ action :set do
 
   if module_path && ::File.exists?(module_path)
     service "apache2" do
+      service_name value_for_platform(
+        ['centos','redhat','fedora','amazon'] => {'default' => 'httpd'},
+        'default' => 'apache2'
+      )
       action :nothing
     end
 
