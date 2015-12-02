@@ -1,0 +1,11 @@
+<% if @definition["url"].empty? -%>
+install_package "https://secure.php.net/distributions/php-<%= @version %>.tar.bz2"
+<% else -%>
+install_package "<%= @definition["url"] %>"
+<% end -%>
+install_pyrus
+install_xdebug "<%= @definition["xdebug_version"] %>"
+enable_builtin_opcache
+<% @definition["plugins"].each do |plugin| -%>
+install_<%= plugin %>
+<% end -%>

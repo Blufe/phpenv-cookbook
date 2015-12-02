@@ -39,6 +39,19 @@ action :build do
 
       script_code << %{mv #{node['apache']['dir']}/modules/libphp5.so #{node[:phpenv][:root_path]}/versions/#{new_resource.release}/libexec/libphp5.so;}
     end
+
+    if new_resource.definition
+      template "#{node['phpenv']['root_path']}/plugins/php-build/share/php-build/definitions/#{new_resource.release}" do
+        source "definition.erb"
+        owner node["phpenv"]["user"]
+        group node["phpenv"]["group"]
+        mode 00644
+        variables({
+          "version"    => new_resource.release,
+          "definition" => new_resource.definition
+        })
+      end
+    end
   end
 
   install_start = Time.now

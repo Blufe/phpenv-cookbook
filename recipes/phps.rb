@@ -12,6 +12,7 @@ Array(node[:phpenv][:phps]).each do |php|
   if php.is_a?(Hash)
     phpenv_php php[:release] do
       environment php[:environment] if php[:environment]
+      definition  php[:definition]  if php[:definition]
     end
   else
     phpenv_php php

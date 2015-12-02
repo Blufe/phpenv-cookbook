@@ -15,3 +15,4 @@ attribute :release,        :kind_of => String, :name_attribute => true
 attribute :build,          :kind_of => String, :default => ""
 attribute :ini,            :kind_of => String
 attribute :environment,    :kind_of => Hash
+attribute :definition,     :kind_of => Hash
