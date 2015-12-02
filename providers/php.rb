@@ -88,7 +88,8 @@ end
 def build_script_environment
   script_env = {
     'PKG_CONFIG_PATH' => node[:phpenv][:pkgconfig_path],
-    'PHP_BUILD_CONFIGURE_OPTS' => ""
+    'PHP_BUILD_CONFIGURE_OPTS'    => "",
+    'PHP_BUILD_INSTALL_EXTENSION' => ""
   }
   if new_resource.environment
     script_env.merge!(new_resource.environment)
