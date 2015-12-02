@@ -68,5 +68,26 @@ if phpenv_type == "chh"
       "default_configure_options" => node['phpenv'][phpenv_type]['default_configure_options']
     })
   end
+  unless node['phpenv'][phpenv_type]['add_extensions'].blank?
+    node['phpenv'][phpenv_type]['add_extensions'].each do |ext_name, ext|
+      ext_data =  %Q{"#{ext_name}"}
+      ext_data << ","
+      ext_data << %Q{"#{ext["url_dist"]}"}
+      ext_data << ","
+      ext_data << %Q{"#{ext["url_source"]}"}
+      ext_data << ","
+      ext_data << %Q{"#{ext["source_cwd"]}"}     unless ext["source_cwd"].blank?
+      ext_data << ","
+      ext_data << %Q{"#{ext["configure_args"]}"} unless ext["configure_args"].blank?
+      ext_data << ","
+      ext_data << (ext["extension_type"].blank? ? %Q{"extension"} : %Q{"#{ext["extension_type"]}"})
+      ext_data << ","
+      ext_data << %Q{"#{ext["after_install"]}"}  unless ext["after_install"].blank?
+      file "#{node['phpenv']['root_path']}/plugins/php-build/share/php-build/extension/definition" do
+        _file = Chef::Util::FileEdit.new(path)
+        _file.insert_line_if_no_match(/^"#{ext_name}".*$/, ext_data)
+        _file.write_file
+      end
+    end
+  end
 end
-

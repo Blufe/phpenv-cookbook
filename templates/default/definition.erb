@@ -4,7 +4,9 @@ install_package "https://secure.php.net/distributions/php-<%= @version %>.tar.bz
 install_package "<%= @definition["url"] %>"
 <% end -%>
 install_pyrus
+<% unless @definition["xdebug_version"].blank? -%>
 install_xdebug "<%= @definition["xdebug_version"] %>"
+<% end -%>
 enable_builtin_opcache
 <% @definition["plugins"].each do |plugin| -%>
 install_<%= plugin %>
