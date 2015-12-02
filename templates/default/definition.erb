@@ -1,4 +1,4 @@
-<% if @definition["url"].empty? -%>
+<% if @definition["url"].blank? -%>
 install_package "https://secure.php.net/distributions/php-<%= @version %>.tar.bz2"
 <% else -%>
 install_package "<%= @definition["url"] %>"
