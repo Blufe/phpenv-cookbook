@@ -1,3 +1,6 @@
+<% unless @definition["apxs2_path"].blank? %>
+with_apxs2 "<%= @definition["apxs2_path"] %>"
+<% end -%>
 <% if @definition["url"].blank? -%>
 install_package "https://secure.php.net/distributions/php-<%= @version %>.tar.bz2"
 <% else -%>
