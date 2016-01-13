@@ -84,9 +84,11 @@ if phpenv_type == "chh"
       ext_data << ","
       ext_data << %Q{"#{ext["after_install"]}"}  unless ext["after_install"].blank?
       file "#{node['phpenv']['root_path']}/plugins/php-build/share/php-build/extension/definition" do
-        _file = Chef::Util::FileEdit.new(path)
-        _file.insert_line_if_no_match(/^"#{ext_name}".*$/, ext_data)
-        _file.write_file
+        content lazy {
+          _file = Chef::Util::FileEdit.new(path)
+          _file.insert_line_if_no_match(/^"#{ext_name}".*$/, ext_data)
+          _file.send(:editor).lines.join
+        }
       end
     end
   end
