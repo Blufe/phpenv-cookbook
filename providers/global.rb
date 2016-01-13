@@ -28,9 +28,11 @@ action :set do
     only_if { current_version != new_resource.phpenv_version }
   end
 
+  module_path = "#{node[:phpenv][:root_path]}/versions/#{new_resource.phpenv_version}/usr/lib64/httpd/modules/libphp5.so"
   link "#{node['apache']['dir']}/modules/libphp5.so" do
-    to "#{node[:phpenv][:root_path]}/versions/#{new_resource.phpenv_version}/libexec/libphp5.so"
+    to module_path
     owner node[:phpenv][:user]
     group node[:phpenv][:group]
+    only_if "test -f #{module_path}"
   end
 end

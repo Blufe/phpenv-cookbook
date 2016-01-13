@@ -32,7 +32,7 @@ action :set do
       module_path = false
     end
   else
-    module_path = "#{node[:phpenv][:root_path]}/versions/#{new_resource.phpenv_version}/libexec/libphp5.so"
+    module_path = "#{node[:phpenv][:root_path]}/versions/#{new_resource.phpenv_version}/usr/lib64/httpd/modules/libphp5.so"
   end
 
   if module_path && ::File.exists?(module_path)
