@@ -32,9 +32,11 @@ action :build do
         conf_path = "#{node['apache']['dir']}/httpd.conf"
       end
       file conf_path do
-        _file = Chef::Util::FileEdit.new(path)
-        _file.insert_line_if_no_match(/^LoadModule .*$/, "#LoadModule dummy dummy.so")
-        _file.write_file
+        content lazy {
+          _file = Chef::Util::FileEdit.new(path)
+          _file.insert_line_if_no_match(/^LoadModule .*$/, "#LoadModule dummy dummy.so")
+          _file.send(:editor).lines.join
+        }
       end
 
       script_code << %{mv #{node['apache']['dir']}/modules/libphp5.so #{node[:phpenv][:root_path]}/versions/#{new_resource.release}/libexec/libphp5.so;}
