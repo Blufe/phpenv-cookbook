@@ -21,25 +21,20 @@ action :build do
   phpenv_type = node[:phpenv][:type]
   case phpenv_type
   when 'chh'
-    options = node[:phpenv][:chh][:default_configure_options]
-    if options.find {|option| option =~ /^--with-apxs2/}
-      case node['platform_family']
-      when 'rhel', 'fedora', 'arch'
-        conf_path = "#{node['apache']['dir']}/conf/httpd.conf"
-      when 'debian'
-        conf_path = "#{node['apache']['dir']}/apache2.conf"
-      when 'freebsd'
-        conf_path = "#{node['apache']['dir']}/httpd.conf"
-      end
-      file conf_path do
-        content lazy {
-          _file = Chef::Util::FileEdit.new(path)
-          _file.insert_line_if_no_match(/^LoadModule .*$/, "#LoadModule dummy dummy.so")
-          _file.send(:editor).lines.join
-        }
-      end
-
-      script_code << %{mv #{node['apache']['dir']}/modules/libphp5.so #{node[:phpenv][:root_path]}/versions/#{new_resource.release}/libexec/libphp5.so;}
+    case node['platform_family']
+    when 'rhel', 'fedora', 'arch'
+      conf_path = "#{node['apache']['dir']}/conf/httpd.conf"
+    when 'debian'
+      conf_path = "#{node['apache']['dir']}/apache2.conf"
+    when 'freebsd'
+      conf_path = "#{node['apache']['dir']}/httpd.conf"
+    end
+    file conf_path do
+      content lazy {
+        _file = Chef::Util::FileEdit.new(path)
+        _file.insert_line_if_no_match(/^LoadModule .*$/, "#LoadModule dummy dummy.so")
+        _file.send(:editor).lines.join
+      }
     end
 
     if new_resource.definition
