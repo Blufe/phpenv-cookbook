@@ -10,6 +10,8 @@ install_package "<%= @definition["url"] %>"
 install_xdebug "<%= @definition["xdebug_version"] %>"
 <% end -%>
 enable_builtin_opcache
-<% if @definition["plugins"] -%><% @definition["plugins"].each do |plugin| -%>
+<% if @definition["plugins"] -%>
+<% @definition["plugins"].each do |plugin| -%>
 install_<%= plugin %>
-<% end -%><% end -%>
+<% end -%>
+<% end -%>
