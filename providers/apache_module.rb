@@ -17,40 +17,53 @@ def whyrun_supported?
 end
 
 action :set do
+  curr_major_version = current_apache_module_version
+  major_version      = new_resource.phpenv_version.to_i.to_s
+
   Chef::Application.fatal!(
     "apache2 cookbook is missing. Please add it to the run_list."
    ) if ! run_context.loaded_recipe?("apache2")
 
-  if "global" == new_resource.phpenv_version
-    if current_global_version
-      module_path = "#{node[:phpenv][:root_path]}/lib/libphp5.so"
-    else
-      Chef::Log.warn(
-        "phpenv: global php version is not set, use phpenv_global to set it (action will be skipped)"
-      )
+  recipe = self
+  ruby_block "phpenv#set-php-mod" do
+    block do
+      if "global" == new_resource.phpenv_version
+        if current_global_version
+          module_path = "#{node['apache']['libexecdir']}/libphp#{curr_major_version}.so"
+        else
+          Chef::Log.warn(
+            "phpenv: global php version is not set, use phpenv_global to set it (action will be skipped)"
+          )
 
-      module_path = false
-    end
-  else
-    module_path = "#{node[:phpenv][:root_path]}/versions/#{new_resource.phpenv_version}/usr/lib64/httpd/modules/libphp5.so"
-  end
+          module_path = false
+        end
+      else
+        module_path = "#{node['apache']['libexecdir']}/libphp#{major_version}.so"
+      end
 
-  if module_path && ::File.exists?(module_path)
-    service "apache2" do
-      service_name value_for_platform(
-        ['centos','redhat','fedora','amazon'] => {'default' => 'httpd'},
-        'default' => 'apache2'
-      )
-      action :nothing
-    end
+      if module_path && ::File.exists?(module_path)
+        recipe.service "apache2" do
+          service_name value_for_platform(
+            ['centos','redhat','fedora','amazon'] => {'default' => 'httpd'},
+            'default' => 'apache2'
+          )
+          action :nothing
+        end
 
-    apache_module "php5" do
-      module_path module_path
-      conf true
+        recipe.apache_module "php#{curr_major_version}" do
+          enable false
+          only_if { curr_major_version != major_version }
+        end
+
+        recipe.apache_module "php#{major_version}" do
+          module_path module_path
+          conf true
+        end
+      elsif module_path
+        Chef::Log.warn(
+          "apache module file doesn't exists \"#{module_path}\" (action will be skipped)"
+        )
+      end
     end
-  elsif module_path
-    Chef::Log.warn(
-      "apache module file doesn't exists \"#{module_path}\" (action will be skipped)"
-    )
   end
 end

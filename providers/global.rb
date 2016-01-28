@@ -17,22 +17,30 @@ def whyrun_supported?
 end
 
 action :set do
-  current_version = current_global_version
+  current_version    = current_global_version
+  curr_major_version = current_version.to_i.to_s
+  curr_module_name   = "libphp#{curr_major_version}.so"
+  curr_module_link   = "#{node['apache']['libexecdir']}/#{curr_module_name}"
 
-  phpenv_script "set-golbal-version-#{new_resource.phpenv_version}" do
-    code "phpenv global #{new_resource.phpenv_version}"
+  phpenv_version     = new_resource.phpenv_version
+  major_version      = phpenv_version.to_i.to_s
+  module_name        = "libphp#{major_version}.so"
+  module_link        = "#{node['apache']['libexecdir']}/#{module_name}"
+  module_path        = "#{node[:phpenv][:root_path]}/versions/#{phpenv_version}/#{module_link}"
+
+  phpenv_script "set-golbal-version-#{phpenv_version}" do
+    code "phpenv global #{phpenv_version}"
     user node[:phpenv][:user]
     group node[:phpenv][:group]
     phpenv_root node[:phpenv][:root_path]
     environment new_resource.environment
-    only_if { current_version != new_resource.phpenv_version }
+    only_if { current_version != phpenv_version }
   end
 
-  module_path = "#{node[:phpenv][:root_path]}/versions/#{new_resource.phpenv_version}/usr/lib64/httpd/modules/libphp5.so"
-  link "#{node['apache']['dir']}/modules/libphp5.so" do
+  link module_link do
     to module_path
     owner node[:phpenv][:user]
     group node[:phpenv][:group]
-    only_if "test -f #{module_path}"
+    only_if { ::File.file?(module_path) && curr_module_link != module_link }
   end
 end

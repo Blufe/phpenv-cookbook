@@ -11,10 +11,16 @@ class Chef
   module Phpenv
     module Helpers
 
+      include Chef::Mixin::ShellOut
+
       def current_global_version
         version_file = ::File.join(node[:phpenv][:root_path], 'version')
 
         ::File.exists?(version_file) && ::IO.read(version_file).chomp
+      end
+
+      def current_apache_module_version
+        shell_out("httpd -M").stdout.gsub(/[\r\n]/,'').gsub(/.*php([0-9]*)_module.*/, '\1')
       end
 
     end
