@@ -17,8 +17,8 @@ def whyrun_supported?
 end
 
 action :set do
-  curr_major_version = current_apache_module_version
-  major_version      = new_resource.phpenv_version.to_i.to_s
+  curr_major_version = current_apache_module_version.to_s.to_i
+  major_version      = new_resource.phpenv_version.to_s.to_i
 
   Chef::Application.fatal!(
     "apache2 cookbook is missing. Please add it to the run_list."

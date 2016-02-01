@@ -18,12 +18,12 @@ end
 
 action :set do
   current_version    = current_global_version
-  curr_major_version = current_version.to_i.to_s
+  curr_major_version = current_version.to_s.to_i
   curr_module_name   = "libphp#{curr_major_version}.so"
   curr_module_link   = "#{node['apache']['libexecdir']}/#{curr_module_name}"
 
   phpenv_version     = new_resource.phpenv_version
-  major_version      = phpenv_version.to_i.to_s
+  major_version      = phpenv_version.to_s.to_i
   module_name        = "libphp#{major_version}.so"
   module_link        = "#{node['apache']['libexecdir']}/#{module_name}"
   module_path        = "#{node[:phpenv][:root_path]}/versions/#{phpenv_version}/#{module_link}"

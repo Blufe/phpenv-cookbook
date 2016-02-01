@@ -20,7 +20,7 @@ class Chef
       end
 
       def current_apache_module_version
-        shell_out("httpd -M").stdout.gsub(/[\r\n]/,'').gsub(/.*php([0-9]*)_module.*/, '\1')
+        shell_out("httpd -M").stdout.gsub(/[\r\n]/,'').gsub(/.*php([0-9]*)_module.*/, '\1').to_i.to_s
       end
 
     end
