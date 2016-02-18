@@ -68,7 +68,7 @@ if phpenv_type == "chh"
       "default_configure_options" => node['phpenv'][phpenv_type]['default_configure_options']
     })
   end
-  unless node['phpenv'][phpenv_type]['add_extensions'].blank?
+  unless node['phpenv'][phpenv_type]['add_extensions'].nil?
     node['phpenv'][phpenv_type]['add_extensions'].each do |ext_name, ext|
       ext_data =  %Q{"#{ext_name}"}
       ext_data << ","
@@ -76,13 +76,13 @@ if phpenv_type == "chh"
       ext_data << ","
       ext_data << %Q{"#{ext["url_source"]}"}
       ext_data << ","
-      ext_data << %Q{"#{ext["source_cwd"]}"}     unless ext["source_cwd"].blank?
+      ext_data << %Q{"#{ext["source_cwd"]}"}     unless ext["source_cwd"].nil?
       ext_data << ","
-      ext_data << %Q{"#{ext["configure_args"]}"} unless ext["configure_args"].blank?
+      ext_data << %Q{"#{ext["configure_args"]}"} unless ext["configure_args"].nil?
       ext_data << ","
-      ext_data << (ext["extension_type"].blank? ? %Q{"extension"} : %Q{"#{ext["extension_type"]}"})
+      ext_data << (ext["extension_type"].nil? ? %Q{"extension"} : %Q{"#{ext["extension_type"]}"})
       ext_data << ","
-      ext_data << %Q{"#{ext["after_install"]}"}  unless ext["after_install"].blank?
+      ext_data << %Q{"#{ext["after_install"]}"}  unless ext["after_install"].nil?
       file "#{node['phpenv']['root_path']}/plugins/php-build/share/php-build/extension/definition" do
         content lazy {
           _file = Chef::Util::FileEdit.new(path)

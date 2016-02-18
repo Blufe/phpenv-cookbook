@@ -1,12 +1,12 @@
-<% unless @definition["apxs2_path"].blank? %>
+<% unless @definition["apxs2_path"].nil? %>
 with_apxs2 "<%= @definition["apxs2_path"] %>"
 <% end -%>
-<% if @definition["url"].blank? -%>
+<% if @definition["url"].nil? -%>
 install_package "https://secure.php.net/distributions/php-<%= @version %>.tar.bz2"
 <% else -%>
 install_package "<%= @definition["url"] %>"
 <% end -%>
-<% unless @definition["xdebug_version"].blank? -%>
+<% unless @definition["xdebug_version"].nil? -%>
 install_xdebug "<%= @definition["xdebug_version"] %>"
 <% end -%>
 enable_builtin_opcache
